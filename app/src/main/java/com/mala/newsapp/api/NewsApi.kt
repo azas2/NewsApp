@@ -1,6 +1,9 @@
 package com.mala.newsapp.api
 
+import com.mala.newsapp.model.News
 import com.mala.newsapp.uitls.Constants
+import com.mala.newsapp.uitls.Resource
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,17 +13,16 @@ interface NewsApi {
         @Query("country")
         country:String="us",
         @Query("page")
-        pagenumber:Int=1,
+        pageNumber:Int=1,
         @Query("apikey")
-        apikey:String= Constants.API_KEY)
+        apikey:String= Constants.API_KEY):Response<News>
 
         @GET("/v2/everything")
     suspend fun getSearchNews(
         @Query("country")
         search:String,
         @Query("page")
-        page_number:Int=1,
+        pageNumber:Int=1,
         @Query("apikey")
-        apikey:String= Constants.API_KEY
-    )
+        apikey:String= Constants.API_KEY):Response<News>
 }
