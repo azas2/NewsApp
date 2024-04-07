@@ -14,6 +14,12 @@ import java.lang.Exception
 class NewsViewModel(
     val newsRepository: Repository
 ):ViewModel() {
+
+    private var _searchNews:MutableLiveData<Resource<News>> = MutableLiveData()
+    val searchNews:LiveData<Resource<News>>
+        get()=_searchNews
+
+    private val pageNumberOfSearch=1
      private var  _breakingNews : MutableLiveData<Resource<News>> =MutableLiveData()
     val breakingnews:LiveData<Resource<News>>
         get()=_breakingNews
@@ -32,6 +38,23 @@ class NewsViewModel(
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
             }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+    fun SearchOfNews(txSearch:String)=viewModelScope.launch {
+            _searchNews.postValue(Resource.Loading())
+            val response=newsRepository.getSearchNews(txSearch,pageNumberOfSearch)
+        _searchNews.postValue(handleSearchNewsResponse(response))
+        }
+
+    private fun handleSearchNewsResponse(response:Response<News>):Resource<News>{
+        if(response.isSuccessful){
+            response.body()?.let { newResponse ->
+               return Resource.Success(newResponse)
+            }
+
         }
         return Resource.Error(response.message())
     }

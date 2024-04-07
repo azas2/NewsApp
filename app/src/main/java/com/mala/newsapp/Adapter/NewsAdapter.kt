@@ -51,6 +51,7 @@ class NewsAdapter :RecyclerView.Adapter<NewsAdapter.ViewHolder>(){
 // make listener to when click to specific article open to web view
     private var onItemClickListener:((Article)->Unit)?=null
     fun setOnItemClickListener(listener:(Article)->Unit){
+        if(onItemClickListener==null)
         onItemClickListener=listener
     }
 

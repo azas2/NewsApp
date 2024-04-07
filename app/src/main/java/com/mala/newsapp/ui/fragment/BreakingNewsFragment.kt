@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.mala.newsapp.Adapter.NewsAdapter
 import com.mala.newsapp.R
 import com.mala.newsapp.ViewModels.NewsViewModel
@@ -15,12 +18,13 @@ import com.mala.newsapp.databinding.FragmentBreakingNewsBinding
 import com.mala.newsapp.ui.NewsActivity
 import com.mala.newsapp.uitls.FragmentsNeedIt
 import com.mala.newsapp.uitls.Resource
+import java.nio.BufferUnderflowException
 
 class BreakingNewsFragment : Fragment(),FragmentsNeedIt {
     lateinit var binding: FragmentBreakingNewsBinding
     override lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
-    val TAG = "ArticleFragment"
+    val TAG = "BreakingFragment"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,14 +37,12 @@ class BreakingNewsFragment : Fragment(),FragmentsNeedIt {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewmodel
         setupRecyclerView()
-        viewModel.breakingnews.observe(viewLifecycleOwner, Observer { response ->
+     viewModel.breakingnews.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    println("worrrrrrrkkkkkkkk")
                     hideProgressBar()
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles)
-                        Log.e(TAG, "${newsResponse.articles[0]}")
                     }
                 }
 
@@ -57,7 +59,14 @@ class BreakingNewsFragment : Fragment(),FragmentsNeedIt {
             }
 
         })
+        newsAdapter.setOnItemClickListener {
+            val action = BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(it)
+            findNavController().navigate(action)
+        }
+
+
     }
+
 
     fun hideProgressBar() {
         binding.ldArticle.visibility = View.INVISIBLE

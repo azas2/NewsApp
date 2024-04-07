@@ -19,7 +19,7 @@ interface NewsApi {
 
         @GET("/v2/everything")
     suspend fun getSearchNews(
-        @Query("country")
+        @Query("q")
         search:String,
         @Query("page")
         pageNumber:Int=1,
