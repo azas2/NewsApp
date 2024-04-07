@@ -36,6 +36,10 @@ class ArticleFragment : Fragment(),FragmentsNeedIt {
         super.onViewCreated(view, savedInstanceState)
         viewModel=(activity as NewsActivity).viewmodel
         val article=args.article
+        binding.articleWebView.apply {
+             webViewClient=WebViewClient()
+            loadUrl(article.url)
+        }
 
     }
 
