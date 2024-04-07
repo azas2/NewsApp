@@ -6,19 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.mala.newsapp.Adapter.NewsAdapter
+import com.mala.newsapp.Adapter.SpinnerAdapter
 import com.mala.newsapp.R
 import com.mala.newsapp.ViewModels.NewsViewModel
-import com.mala.newsapp.databinding.FragmentArticalNewBinding
 import com.mala.newsapp.databinding.FragmentBreakingNewsBinding
 import com.mala.newsapp.ui.NewsActivity
 import com.mala.newsapp.uitls.FragmentsNeedIt
 import com.mala.newsapp.uitls.Resource
-import java.nio.BufferUnderflowException
 
 class BreakingNewsFragment : Fragment(),FragmentsNeedIt {
     lateinit var binding: FragmentBreakingNewsBinding
@@ -37,12 +37,14 @@ class BreakingNewsFragment : Fragment(),FragmentsNeedIt {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewmodel
         setupRecyclerView()
-     viewModel.breakingnews.observe(viewLifecycleOwner, Observer { response ->
+
+
+        viewModel.breakingnews.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles)
+                        newsAdapter.submitList(newsResponse.articles)
                     }
                 }
 
@@ -60,7 +62,8 @@ class BreakingNewsFragment : Fragment(),FragmentsNeedIt {
 
         })
         newsAdapter.setOnItemClickListener {
-            val action = BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(it)
+            val action =
+                BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(it)
             findNavController().navigate(action)
         }
 

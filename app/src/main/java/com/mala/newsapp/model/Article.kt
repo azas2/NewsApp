@@ -1,7 +1,9 @@
 package com.mala.newsapp.model
 
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 @Entity(
@@ -11,14 +13,20 @@ import java.io.Serializable
 data class Article(
     @PrimaryKey(autoGenerate = true)
     var id:Int?=null,
-    val author: String,
-    val content: String,
-    val description: String,
-    val publishedAt: String,
-    val source: Source,
-    val title: String,
-    var url: String,
-    val urlToImage: String
+    @SerializedName("id")
+    val author: String?=null,
+    @SerializedName("myContent")
+    val content: String?=null,
+    @SerializedName("description")
+    val description: String?=null,
+    @SerializedName("publishedAt")
+    val publishedAt: String?=null,
+    @SerializedName("source")
+    val source: Source?=null,
+    @SerializedName("title")
+    val title: String?=null,
+    var url: String?=null,
+    val urlToImage: String?=null
 ):Serializable
 {
     override fun hashCode(): Int {

@@ -24,6 +24,10 @@ class NewsAdapter :RecyclerView.Adapter<NewsAdapter.ViewHolder>(){
     }
     // here give the list
     val differ=AsyncListDiffer(this,differCallback)
+    fun submitList(list:List<Article>){
+        val filterList=list.filter { it.urlToImage!=null}
+        differ.submitList(filterList)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding=ItemArticalePreviewBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
@@ -40,19 +44,24 @@ class NewsAdapter :RecyclerView.Adapter<NewsAdapter.ViewHolder>(){
             Glide.with(holder.itemView.context)
                 .load(artical.urlToImage)
                 .into(holder.binding.articleImage)
-            tvSource.text=artical.source.name
-            tvTitle.text=artical.title
-            tvDescription.text=artical.description
-            tvpublishedAt.text=artical.publishedAt
+            tvSource.text=artical.source?.name
+            tvTitle.text=artical?.title
+            tvDescription.text=artical?.description
+            tvpublishedAt.text=artical?.publishedAt
+            root.setOnClickListener {
+                onItemClickListener?.let { it(artical)}
+            }
         }
-        onItemClickListener?.let { it(artical)}
+
+
 
     }
+    //{ article:Article ->
 // make listener to when click to specific article open to web view
     private var onItemClickListener:((Article)->Unit)?=null
     fun setOnItemClickListener(listener:(Article)->Unit){
-        if(onItemClickListener==null)
         onItemClickListener=listener
+
     }
 
 

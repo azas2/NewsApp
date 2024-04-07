@@ -1,10 +1,12 @@
 package com.mala.newsapp.ViewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mala.newsapp.Repository.Repository
+import com.mala.newsapp.model.Article
 import com.mala.newsapp.model.News
 import com.mala.newsapp.uitls.Resource
 import kotlinx.coroutines.launch
@@ -14,16 +16,19 @@ import java.lang.Exception
 class NewsViewModel(
     val newsRepository: Repository
 ):ViewModel() {
-
+    var breakingNewsResponse:News?=null
+    var searchNewsResponse:News?=null
+val TAG="VIEWMODEL"
     private var _searchNews:MutableLiveData<Resource<News>> = MutableLiveData()
     val searchNews:LiveData<Resource<News>>
         get()=_searchNews
 
-    private val pageNumberOfSearch=1
+    private var pageNumberOfSearch=1
      private var  _breakingNews : MutableLiveData<Resource<News>> =MutableLiveData()
     val breakingnews:LiveData<Resource<News>>
         get()=_breakingNews
    private var breakingNewsPage=1
+
     init {
             getBreakingNews("us")
     }
@@ -36,7 +41,16 @@ class NewsViewModel(
     private fun handleBreakingNewsResponse(response: Response<News>) : Resource<News> {
         if(response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
+                breakingNewsPage++
+                if(breakingNewsResponse==null){
+                    breakingNewsResponse=resultResponse
+                }
+                else{
+                    val oldBreakingNews=breakingNewsResponse?.articles
+                    val newBreakingNews=resultResponse.articles
+                    oldBreakingNews?.addAll(newBreakingNews)
+                }
+                return Resource.Success(breakingNewsResponse?:resultResponse)
             }
         }
         return Resource.Error(response.message())
@@ -52,10 +66,34 @@ class NewsViewModel(
     private fun handleSearchNewsResponse(response:Response<News>):Resource<News>{
         if(response.isSuccessful){
             response.body()?.let { newResponse ->
-               return Resource.Success(newResponse)
+                pageNumberOfSearch++
+                if(searchNewsResponse==null){
+                    searchNewsResponse=newResponse
+                }
+                else{
+                    val oldSearchNewsResponse= searchNewsResponse?.articles
+                    val newSearchNewsResponse=newResponse.articles
+                    oldSearchNewsResponse?.addAll(newSearchNewsResponse)
+                }
+               return Resource.Success(searchNewsResponse?:newResponse)
             }
 
         }
         return Resource.Error(response.message())
+    }
+
+    fun getAddData(article:Article){
+        try {
+            viewModelScope.launch {
+                newsRepository.addData(article)
+            }
+        }catch (ex:Exception){
+            Log.d(TAG,"${ex.message}")
+        }
+    }
+    fun getSavedData()= newsRepository.getAllData()
+
+    fun deleteArticle(article: Article)=viewModelScope.launch {
+        newsRepository.deleteData(article)
     }
 }

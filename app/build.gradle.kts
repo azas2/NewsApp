@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -44,6 +46,7 @@ dependencies {
     val room_version = "2.6.1"
     val lifecycle_version = "2.7.0"
     val nav_version = "2.7.7"
+    val paging_version = "3.2.1"
 
     //Room
     implementation("androidx.room:room-runtime:$room_version")
@@ -74,6 +77,9 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     // animation
     implementation ("com.airbnb.android:lottie:6.4.0")
+    //paging
+    implementation ("androidx.paging:paging-runtime:$paging_version")
+    // hilt
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

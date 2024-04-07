@@ -5,4 +5,8 @@
     <string name="brekingnews">brekingNews</string>
     <string name="saved_menu">saved</string>
     <string name="Search">Search</string>
+    <string name="source">source</string>
+    <string name="tvtitle">tvTitle</string>
+    <string name="tvdisciption">tvDisciption</string>
+    <string name="tvpublishedat">tvpublishedAt</string>
 </resources>

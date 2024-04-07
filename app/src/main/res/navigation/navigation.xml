@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/breakingNewsFragment"
         android:name="com.mala.newsapp.ui.fragment.BreakingNewsFragment"
-        android:label="fragment_breaking_news"
+        android:label="News"
         tools:layout="@layout/fragment_breaking_news" >
         <action
             android:id="@+id/action_breakingNewsFragment_to_articleFragment"
@@ -49,7 +49,7 @@
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.mala.newsapp.ui.fragment.ArticleFragment"
-        android:label="fragment_artical_new"
+        android:label="Back"
         tools:layout="@layout/fragment_artical_new"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_in_left"
@@ -58,5 +58,14 @@
         <argument
             android:name="article"
             app:argType="com.mala.newsapp.model.Article" />
+        <action
+            android:id="@+id/action_articleFragment_to_savedNewsFragment"
+            app:destination="@id/savedNewsFragment" />
+        <action
+            android:id="@+id/action_articleFragment_to_searchNewsFragemnt2"
+            app:destination="@id/searchNewsFragemnt2" />
+        <action
+            android:id="@+id/action_articleFragment_to_breakingNewsFragment"
+            app:destination="@id/breakingNewsFragment" />
     </fragment>
 </navigation>

@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.mala.newsapp.Adapter.NewsAdapter
 import com.mala.newsapp.R
 import com.mala.newsapp.ViewModels.NewsViewModel
@@ -28,6 +30,7 @@ class ArticleFragment : Fragment(),FragmentsNeedIt {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding=FragmentArticalNewBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -36,7 +39,27 @@ class ArticleFragment : Fragment(),FragmentsNeedIt {
         super.onViewCreated(view, savedInstanceState)
         viewModel=(activity as NewsActivity).viewmodel
         val article=args.article
+        binding.articleWebView.apply {
+             webViewClient=WebViewClient()
+            article.url?.let { loadUrl(it) }
 
+        }
+        binding.fab.setOnClickListener {
+        viewModel.getAddData(article)
+            Snackbar.make(view,"Article saved Successfly",Snackbar.LENGTH_SHORT).show()
+        }
+
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().actionBar?.show()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().actionBar?.show()
     }
 
 }
