@@ -19,6 +19,9 @@ import com.mala.newsapp.databinding.FragmentBreakingNewsBinding
 import com.mala.newsapp.ui.NewsActivity
 import com.mala.newsapp.uitls.FragmentsNeedIt
 import com.mala.newsapp.uitls.Resource
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 
 class BreakingNewsFragment : Fragment(),FragmentsNeedIt {
     lateinit var binding: FragmentBreakingNewsBinding

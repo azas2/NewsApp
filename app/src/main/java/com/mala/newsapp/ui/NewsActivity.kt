@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,10 +23,12 @@ import com.mala.newsapp.Repository.Repository
 import com.mala.newsapp.ViewModels.NewsViewModel
 import com.mala.newsapp.data.DataBase
 import com.mala.newsapp.databinding.ActivityNewsBinding
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class NewsActivity: AppCompatActivity() {
-    lateinit var  viewmodel:NewsViewModel
+     val viewmodel:NewsViewModel by viewModels()
    private lateinit var binding:ActivityNewsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +39,10 @@ class NewsActivity: AppCompatActivity() {
         val navController = navHostFragment.navController
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
-        val newsRepository = Repository(DataBase(this))
-        val viewModelProviderFactory = NewsViewModelProvider(newsRepository)
+
+
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        viewmodel = ViewModelProvider(this, viewModelProviderFactory)[NewsViewModel::class.java]
+
         spinnerSetup()
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {

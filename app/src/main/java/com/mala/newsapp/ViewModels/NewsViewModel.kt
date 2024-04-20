@@ -9,13 +9,15 @@ import com.mala.newsapp.Repository.Repository
 import com.mala.newsapp.model.Article
 import com.mala.newsapp.model.News
 import com.mala.newsapp.uitls.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.lang.Exception
-
-class NewsViewModel(
+import javax.inject.Inject
+@HiltViewModel
+class NewsViewModel @Inject constructor(
     val newsRepository: Repository
-):ViewModel() {
+) :ViewModel() {
     var breakingNewsResponse:News?=null
     var searchNewsResponse:News?=null
 val TAG="VIEWMODEL"

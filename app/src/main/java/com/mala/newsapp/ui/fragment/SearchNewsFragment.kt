@@ -16,11 +16,13 @@ import com.mala.newsapp.databinding.FragmentSearchNewsFragmentBinding
 import com.mala.newsapp.ui.NewsActivity
 import com.mala.newsapp.uitls.FragmentsNeedIt
 import com.mala.newsapp.uitls.Resource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 
 class SearchNewsFragment() : Fragment(),FragmentsNeedIt {
     lateinit var binding: FragmentSearchNewsFragmentBinding
